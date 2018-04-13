@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,6 +33,8 @@ public class timetableActivity extends Activity {
     private TimetableTask ttt;
     private TableLayout timetable;
     private ConstraintLayout layout;
+    private LinearLayout modulesList;
+    private TextView[] textViews;
     TextView console;
 
 
@@ -40,9 +43,6 @@ public class timetableActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
 
-        layout = findViewById(R.id.linearLayout);
-
-        console = (TextView) findViewById(R.id.tv);
         console.setMovementMethod(new ScrollingMovementMethod());
         ttt = new TimetableTask(this);
         ttt.execute();
@@ -56,6 +56,7 @@ public class timetableActivity extends Activity {
             TTModule[][] timetable = new TTModule[times.length][days.length];
 
             int ind = 0;
+
 
             for(int i = 0;i < classes.size();i++) {
                 int x = -1,y = -1;
@@ -89,6 +90,7 @@ public class timetableActivity extends Activity {
 
             String line = "";
 
+            /*
             for(int i = 0;i < timetable[i].length;i++) {
                     line += days[i] + "\n";
                 for(int j = 0;j < timetable.length;j++) {
@@ -99,8 +101,38 @@ public class timetableActivity extends Activity {
                 }
                 line += "\n";
             }
-            console.setText(line);
-            console.setTextSize(30);
+            */
+            textViews = new TextView[days.length * 2];
+            modulesList = findViewById(R.id.moduleList);
+
+            for(int i = 0, j = 0;i < days.length;i++) {
+                TextView tv = new TextView(this);
+                tv.setText(days[i]);
+                tv.setClickable(true);
+                tv.setTextSize(40);
+
+                TextView tv2 = new TextView(this);
+                tv2.setVisibility(View.GONE);
+                tv2.setTextSize(45);
+
+                textViews[j++] = tv;
+                textViews[j++] = tv2;
+
+                tv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        boolean found = false;
+                        TextView tv = (TextView) v;
+                        for(int i = 0;i < days.length && !found;i++) {
+                            if(days[i].equalsIgnoreCase(tv.getText().toString())) {
+                                found = true;
+                                TextView tv2 = textViews[i * 2 + 1];
+                                tv2.setVisibility(tv2.isShown()? View.GONE: View.VISIBLE);
+                            }
+                        }
+                    }
+                });
+            }
         }
 
     //Parses HTML, gets modules from selected student ID, then sends arrayList of all the modules to displayModules method.

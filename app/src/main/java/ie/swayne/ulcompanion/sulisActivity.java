@@ -41,7 +41,6 @@ public class sulisActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sulis);
 
-        tv = (TextView) findViewById(R.id.tv);
         Intent in = getIntent();
         pw = in.getStringExtra("pw");
 

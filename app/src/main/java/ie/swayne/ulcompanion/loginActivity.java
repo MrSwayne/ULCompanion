@@ -49,12 +49,12 @@ public class loginActivity extends Activity {
         SharedPreferences prefs = getSharedPreferences(SETTINGS_FILE, MODE_PRIVATE);
         ID = prefs.getString("SETTINGS_ID", null);
 
-        tv = (TextView) findViewById(R.id.tv);
         iet = (EditText) findViewById(R.id.ID);
         pet = (EditText) findViewById(R.id.password);
         //cb = findViewById(R.id.cb);
 
         cb = new CheckBox(this);
+        cb.setChecked(false);
 
         if(prefs.getBoolean("SETTINGS_REMEMBER", false) == true)
             cb.setChecked(true);
@@ -101,8 +101,9 @@ public class loginActivity extends Activity {
 
     public void onClickTT(View view) {
 
+        Log.i(MSG, "timetable clicked");
         ID = iet.getText().toString();
-        pw = pet.getText().toString();
+       // pw = pet.getText().toString();
 
         if(!ID.isEmpty()) {
             Intent i = new Intent(this, timetableActivity.class);
