@@ -23,6 +23,8 @@ import org.jsoup.nodes.Element;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static ie.swayne.ulcompanion.loginActivity.MSG;
+
 public class timetableActivity extends Activity {
 
 
@@ -43,7 +45,6 @@ public class timetableActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
 
-        console.setMovementMethod(new ScrollingMovementMethod());
         ttt = new TimetableTask(this);
         ttt.execute();
     }
@@ -106,6 +107,7 @@ public class timetableActivity extends Activity {
             modulesList = findViewById(R.id.moduleList);
 
             for(int i = 0, j = 0;i < days.length;i++) {
+                line = "";
                 TextView tv = new TextView(this);
                 tv.setText(days[i]);
                 tv.setClickable(true);
@@ -117,6 +119,9 @@ public class timetableActivity extends Activity {
 
                 textViews[j++] = tv;
                 textViews[j++] = tv2;
+
+
+                tv2.setText(line);
 
                 tv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -132,7 +137,35 @@ public class timetableActivity extends Activity {
                         }
                     }
                 });
+
+                modulesList.addView(tv);
+                modulesList.addView(tv2);
+
+                for(int z = 0;z < timetable.length;z++) {
+                    if(timetable[z][i] != null) {
+                        line += timetable[z][i].getStart() + "-" + timetable[z][i].getEnd() + " " + timetable[z][i].getCode() + "\n";
+                        if(timetable[z][i].getDuration() > 1) for(int a = 1;a < timetable[z][i].getDuration();a++) z++;
+                    }
+
+                    else
+                        line += times[z] + " N/A" + "\n";
+                }
+                tv2.setText(line);
+
             }
+
+
+            /*
+            for(int i = 0;i < timetable.length;i++) {
+                Log.i(MSG, "len: " + timetable.length + "\t");
+                for(int j = 0;j < timetable[i].length;j++) {
+                    Log.i(MSG, "len: " + timetable[i].length + "\t");
+                    if(timetable[i][j] != null)
+                    Log.i(MSG, timetable[i][j].toString());
+                }
+             */
+
+
         }
 
     //Parses HTML, gets modules from selected student ID, then sends arrayList of all the modules to displayModules method.
