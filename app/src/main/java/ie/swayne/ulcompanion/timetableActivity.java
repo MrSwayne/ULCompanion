@@ -140,6 +140,7 @@ public class timetableActivity extends Activity {
 
                 modulesList.addView(tv);
                 modulesList.addView(tv2);
+                
 
                 for(int z = 0;z < timetable.length;z++) {
                     if(timetable[z][i] != null) {
