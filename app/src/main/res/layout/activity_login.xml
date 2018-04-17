@@ -45,6 +45,7 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rounded"
+                android:singleLine="true"
                 android:drawableLeft="@drawable/ic_user"
                 android:drawablePadding="10dp"
                 android:hint="Email"
