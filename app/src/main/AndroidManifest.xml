@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ie.swayne.ulcompanion">
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -18,9 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".timetableActivity">
+        <activity android:name=".timetableActivity" />
+        <activity android:name=".sulisActivity" />
+        <activity android:name=".mapActivity" />
+        <activity
+            android:name=".mapActivity"
+            android:label="@string/title_activity_map"
+            android:parentActivityName=".timetableActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ie.swayne.ulcompanion.timetableActivity" />
         </activity>
-        <activity android:name=".sulisActivity"></activity>
     </application>
 
 </manifest>

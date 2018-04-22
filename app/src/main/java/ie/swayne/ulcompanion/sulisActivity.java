@@ -7,6 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebResourceRequest;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -19,7 +22,9 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.w3c.dom.Text;
+import static ie.swayne.ulcompanion.loginActivity.MSG;
 
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 public class sulisActivity extends Activity {
@@ -34,6 +39,7 @@ public class sulisActivity extends Activity {
     private String resourcesURL;
     private SulisTask task;
     private String[] moduleHTML;
+    private TextView console;
 
     @SuppressWarnings("unchecked")
     @Override
@@ -105,6 +111,34 @@ public class sulisActivity extends Activity {
     public void getModuleData(SulisModule module, int index) {
         if(moduleHTML[index] == null && pw != null && ID != null) {
             task = new SulisTask(this, module);
+            task.execute();
+
+
+            WebView wv = findViewById(R.id.wv);
+            String url = "https://sulis.ul.ie/access/content/group/"+module.getModuleID();
+
+            /*
+            wv.setWebViewClient(new WebViewClient() {
+                @Override
+                public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                    view.loadUrl(url);
+                    return true;
+                }
+            });
+
+            wv.loadUrl(url);
+            wv.getSettings().setUserAgentString("Chrome/65.0.3325.181");
+
+            try {
+                String postData = "eid=" + URLEncoder.encode(ID, "UTF-8") + "&pw=" + URLEncoder.encode(pw, "UTF-8");
+                wv.postUrl(url, postData.getBytes());
+            } catch(Exception e) {
+                Log.e(MSG, e.getStackTrace().toString());
+            }*/
+
+        } else {
+            //TODO
+            //-> Show saved string instead of searching internet again
         }
     }
 
@@ -125,18 +159,41 @@ public class sulisActivity extends Activity {
             Document doc;
             try {
 
-                Connection.Response loginForm = Jsoup.connect(loginActivity.URL)
-                        .method(Connection.Method.POST)
-                        .execute();
+                String url = "https://sulis.ul.ie/access/content/group/"+module.getModuleID();
 
-                doc = Jsoup.connect(loginActivity.URL2)
-                        .data("cookieexists", "false")
+
+
+                Connection.Response loginForm = Jsoup.connect("https://sulis.ul.ie/access/login")
+                        .method(Connection.Method.POST)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
+                        .referrer(url)
                         .data("eid", ID)
                         .data("pw", pw)
-                        .data("submit", "Submit")
-                        .cookies(loginForm.cookies())
+                        .data("submit", "Log in")
+                        .execute();
+
+                Log.i(MSG, loginForm.body());
+
+
+                doc = Jsoup.connect(url)
+                        .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36")
+                        .referrer(url)
+                        .ignoreHttpErrors(true)
                         .post();
+
+
+
                 HTML = doc.toString();
+
+
+
+                Log.i(MSG, HTML);
+
+                console = findViewById(R.id.tv);
+                console.setText(HTML);
+                console.setVerticalScrollBarEnabled(true);
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();

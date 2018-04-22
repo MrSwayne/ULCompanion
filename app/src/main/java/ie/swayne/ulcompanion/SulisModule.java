@@ -3,10 +3,6 @@ package ie.swayne.ulcompanion;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by Adam on 02/03/2018.
- */
-
 public class SulisModule implements Serializable {
 
     private String name;
@@ -16,18 +12,29 @@ public class SulisModule implements Serializable {
     private String resourcesLink;
     private String announcementsLink;
     private int numResources;
+    private String moduleID;
 
-    private ArrayList<SulisResource> resources = new ArrayList<SulisResource>();
+    private ArrayList<SulisResource> resources = new ArrayList<>();
 
 
-    public SulisModule(String name, String code, String sem) {
+    protected SulisModule(String name, String code, String sem) {
         this.name = name;
         this.code = code;
         this.sem = sem;
     }
 
-    public void setModuleLink(String moduleLink) {
+    private void setModuleID(String ID) {
+        String[] temp = ID.split("/");
+        moduleID = temp[temp.length - 1];
+    }
+
+    protected String getModuleID() {
+        return moduleID;
+    }
+
+    protected void setModuleLink(String moduleLink) {
         this.moduleLink = moduleLink;
+        setModuleID(moduleLink);
         setResourcesLink(moduleLink);
         setAnnouncementsLink(moduleLink);
     }
@@ -36,15 +43,16 @@ public class SulisModule implements Serializable {
         return moduleLink;
     }
 
-    public void setResourcesLink(String resourcesLink) {
+    private void setResourcesLink(String resourcesLink) {
         this.resourcesLink = resourcesLink + "/resources";
     }
+
 
     public String getResourcesLink() {
         return resourcesLink;
     }
 
-    public void setAnnouncementsLink(String announcementsLink) {
+    private void setAnnouncementsLink(String announcementsLink) {
         this.announcementsLink = announcementsLink + "/announcements";
     }
 
@@ -52,7 +60,7 @@ public class SulisModule implements Serializable {
         return announcementsLink;
     }
 
-    public void addResource(SulisResource resource) {
+    private void addResource(SulisResource resource) {
         resources.add(resource);
         numResources++;
     }
@@ -81,7 +89,7 @@ public class SulisModule implements Serializable {
         return name;
     }
 
-    public String getCode() {
+    protected String getCode() {
         return code;
     }
 

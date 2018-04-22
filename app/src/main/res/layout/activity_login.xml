@@ -16,13 +16,15 @@
 
     <ImageView
         android:id="@+id/formLogo"
-        android:paddingVertical="5dp"
         android:layout_width="384dp"
         android:layout_height="201dp"
+        android:paddingVertical="5dp"
         android:scaleType="fitCenter"
         android:src="@drawable/longlogonobg"
 
-        tools:layout_editor_absoluteY="-1dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
         android:id="@+id/scrollView2"
@@ -45,15 +47,14 @@
                 android:layout_marginRight="30dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/rounded"
-                android:singleLine="true"
                 android:drawableLeft="@drawable/ic_user"
                 android:drawablePadding="10dp"
                 android:hint="Email"
                 android:paddingStart="15dp"
-                android:textSize="12dp"
-                android:textStyle="italic"
+                android:singleLine="true"
                 android:textColor="@color/white"
-                />
+                android:textSize="12dp"
+                android:textStyle="italic" />
 
             <AutoCompleteTextView
                 android:id="@+id/password"

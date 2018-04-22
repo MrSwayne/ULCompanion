@@ -88,7 +88,7 @@ public class loginActivity extends Activity {
 
     public void onClickSulis(View view) {
 
-        ID = iet.getText().toString();
+        ID = iet.getText().toString().trim();
         pw = pet.getText().toString();
 
         if(!ID.isEmpty() && !pw.isEmpty()) {

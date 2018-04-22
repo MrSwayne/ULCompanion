@@ -2,6 +2,7 @@ package ie.swayne.ulcompanion;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -28,15 +29,16 @@ import static ie.swayne.ulcompanion.loginActivity.MSG;
 public class timetableActivity extends Activity {
 
 
+    private TTModule[][] timetable;
     protected static String URL = "http://timetable.ul.ie/tt1.asp";
     protected static String URL2 = "http://timetable.ul.ie/tt2.asp";
     private final String ID = loginActivity.ID;
     private String HTML;
     private TimetableTask ttt;
-    private TableLayout timetable;
     private ConstraintLayout layout;
     private LinearLayout modulesList;
     private TextView[] textViews;
+    private ArrayList<TTModule> modules;
     TextView console;
 
 
@@ -49,12 +51,22 @@ public class timetableActivity extends Activity {
         ttt.execute();
     }
 
+    public void onClick(View view) {
+
+            if(timetable != null) {
+                Intent i = new Intent(this, mapActivity.class);
+                i.putExtra("modules", modules);
+                startActivity(i);
+            }
+
+    }
+
 
         public void displayModules(ArrayList<TTModule> classes) {
             final String[] times = {"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"};
             final String[] days = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 
-            TTModule[][] timetable = new TTModule[times.length][days.length];
+             timetable = new TTModule[times.length][days.length];
 
             int ind = 0;
 
@@ -216,7 +228,7 @@ public class timetableActivity extends Activity {
                 timetable[x++] = iterator.next().text();
 
 
-            ArrayList<TTModule> modules = new ArrayList<>();
+            modules = new ArrayList<>();
 
             for(int i = 6;i < timetable.length - 1;i++) {
 
