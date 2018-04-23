@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     tools:context="ie.swayne.ulcompanion.loginActivity">
 
+
     <ImageView
         android:id="@+id/formBG"
         android:layout_width="match_parent"
@@ -82,7 +83,7 @@
                 android:layout_marginTop="30dp"
                 android:background="#1685c5"
                 android:onClick="onClickSulis"
-                android:text="Sign in to Sulis" />
+                android:text="@string/Sulis" />
 
             <Button
                 android:id="@+id/button2"
@@ -93,7 +94,7 @@
                 android:layout_marginTop="30dp"
                 android:background="#1685c5"
                 android:onClick="onClickTT"
-                android:text="Check Timetable" />
+                android:text="@string/timetable" />
 
         </LinearLayout>
     </ScrollView>

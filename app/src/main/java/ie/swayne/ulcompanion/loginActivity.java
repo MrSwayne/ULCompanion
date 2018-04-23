@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.Checkable;
@@ -62,6 +64,8 @@ public class loginActivity extends Activity {
         if(ID != null && cb.isChecked())
             iet.setText(ID);
     }
+
+
 
     protected void onPause() {
         super.onPause();

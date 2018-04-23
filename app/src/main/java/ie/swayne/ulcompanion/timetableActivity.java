@@ -172,16 +172,6 @@ public class timetableActivity extends AppCompatActivity {
         }
     }
 
-    public void onClick(View view) {
-
-            if(timetable != null) {
-                Intent i = new Intent(this, mapActivity.class);
-                i.putExtra("modules", modules);
-                startActivity(i);
-            }
-
-    }
-
 
         public void displayModules(ArrayList<TTModule> classes) {
             final String[] times = {"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"};
@@ -222,7 +212,7 @@ public class timetableActivity extends AppCompatActivity {
                     }
             }
 
-            String line = "";
+            String line;
 
             /*
             for(int i = 0;i < timetable[i].length;i++) {
@@ -238,6 +228,7 @@ public class timetableActivity extends AppCompatActivity {
             */
             textViews = new TextView[days.length * 2];
             modulesList = findViewById(R.id.moduleList);
+
 
             for(int i = 0, j = 0;i < days.length;i++) {
                 line = "";
@@ -328,6 +319,12 @@ public class timetableActivity extends AppCompatActivity {
                         .post();
                 HTML = doc.toString();
 
+                if(doc == null) {
+                    Toast.makeText(c, "Error, invalid student ID detected, returning home", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(c, loginActivity.class);
+                    startActivity(i);
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -339,38 +336,45 @@ public class timetableActivity extends AppCompatActivity {
             super.onPostExecute(result);
 
             Document doc = Jsoup.parse(HTML);
-            String[] timetable = new String[12];
+            try {
+                String[] timetable = new String[12];
 
-            Element table = doc.select("table").first();
+                Element table = doc.select("table").first();
 
-            Iterator<Element> iterator = table.select("td").iterator();
-            int x = 0;
-            while(iterator.hasNext())
-                timetable[x++] = iterator.next().text();
+                Iterator<Element> iterator = table.select("td").iterator();
+                int x = 0;
+                while (iterator.hasNext())
+                    timetable[x++] = iterator.next().text();
 
 
-            modules = new ArrayList<>();
+                modules = new ArrayList<>();
 
-            for(int i = 6;i < timetable.length - 1;i++) {
+                for (int i = 6; i < timetable.length - 1; i++) {
 
-                String[] temp = timetable[i].split("([a-zA-Z]{3}:[1-9]{1,2}-[1-9]{1,2},[1-9]{1,2}-[1-9]{1,2})");
-                for (int j = 0; j < temp.length; j++) {
-                    String day = timetable[i - 6];
+                    String[] temp = timetable[i].split("([a-zA-Z]{3}:[1-9]{1,2}-[1-9]{1,2},[1-9]{1,2}-[1-9]{1,2})");
+                    for (int j = 0; j < temp.length; j++) {
+                        String day = timetable[i - 6];
 
-                    temp[j] = temp[j].replace("-", "");
-                    temp[j] = temp[j].replace("  ", " ");
-                    temp[j] = temp[j].trim();
+                        temp[j] = temp[j].replace("-", "");
+                        temp[j] = temp[j].replace("  ", " ");
+                        temp[j] = temp[j].trim();
 
-                    String[] module = temp[j].split(" ");
+                        String[] module = temp[j].split(" ");
 
-                    if(module.length > 5) {
-                        module[3] = module[3] + " " + module[4];
-                        module[4] = module[5];
+                        if (module.length > 5) {
+                            module[3] = module[3] + " " + module[4];
+                            module[4] = module[5];
+                        }
+                        modules.add(new TTModule("", module[2], module[0], module[1], module[4], module[3], day));
                     }
-                    modules.add(new TTModule("", module[2], module[0], module[1], module[4], module[3], day));
-                  }
+                }
+                displayModules(modules);
+            } catch (Exception e) {
+                Toast.makeText(c, "Error, invalid student ID detected", Toast.LENGTH_SHORT).show();
+                Log.e(loginActivity.MSG, e.getStackTrace().toString());
+                Intent i = new Intent(c, loginActivity.class);
+                startActivity(i);
             }
-            displayModules(modules);
         }
 
         @Override
@@ -379,4 +383,5 @@ public class timetableActivity extends AppCompatActivity {
             Toast.makeText(c, "Loading timetable", Toast.LENGTH_SHORT).show();
         }
     }
+
 }

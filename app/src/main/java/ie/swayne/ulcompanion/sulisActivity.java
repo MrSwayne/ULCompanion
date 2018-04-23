@@ -144,8 +144,8 @@ public class sulisActivity extends Activity {
             task.execute();
 
 
-            WebView wv = findViewById(R.id.wv);
-            String url = "https://sulis.ul.ie/access/content/group/"+module.getModuleID();
+//            WebView wv = findViewById(R.id.wv);
+  //          String url = "https://sulis.ul.ie/access/content/group/"+module.getModuleID();
 
             /*
             wv.setWebViewClient(new WebViewClient() {
@@ -219,9 +219,7 @@ public class sulisActivity extends Activity {
 
                 Log.i(MSG, HTML);
 
-                console = findViewById(R.id.tv);
-                console.setText(HTML);
-                console.setVerticalScrollBarEnabled(true);
+
 
 
 
