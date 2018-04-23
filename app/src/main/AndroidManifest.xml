@@ -20,15 +20,8 @@
         </activity>
         <activity android:name=".timetableActivity" />
         <activity android:name=".sulisActivity" />
-        <activity
-            android:name=".mapActivity"
-            android:label="@string/title_activity_map"
-            android:parentActivityName=".timetableActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ie.swayne.ulcompanion.timetableActivity" />
-        </activity>
+
+
     </application>
 
 </manifest>

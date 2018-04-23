@@ -44,16 +44,6 @@ public class timetableActivity extends Activity {
         ttt.execute();
     }
 
-    public void onClick(View view) {
-
-            if(timetable != null) {
-                Intent i = new Intent(this, mapActivity.class);
-                i.putExtra("modules", modules);
-                startActivity(i);
-            }
-
-    }
-
 
         public void displayModules(ArrayList<TTModule> classes) {
             final String[] times = {"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"};
@@ -253,6 +243,7 @@ public class timetableActivity extends Activity {
                 displayModules(modules);
             } catch (Exception e) {
                 Toast.makeText(c, "Error, invalid student ID detected", Toast.LENGTH_SHORT).show();
+                Log.e(loginActivity.MSG, e.getStackTrace().toString());
                 Intent i = new Intent(c, loginActivity.class);
                 startActivity(i);
             }
