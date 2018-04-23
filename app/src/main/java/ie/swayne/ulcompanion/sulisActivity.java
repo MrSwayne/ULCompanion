@@ -3,6 +3,7 @@ package ie.swayne.ulcompanion;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -44,6 +45,9 @@ public class sulisActivity extends Activity {
     private String[] moduleHTML;
     private TextView console;
 
+    protected static String URL = "https://sulis.ul.ie/portal/xlogin";
+    protected static String URL2 = "https://sulis.ul.ie/portal/xlogin";
+
     @SuppressWarnings("unchecked")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +74,8 @@ public class sulisActivity extends Activity {
         for(int i = 0, j = 0;i < modules.size();i++) {
             TextView tv = new TextView(this);
             tv.setText(modules.get(i).getCode());
+            tv.setTextColor(Color.parseColor("#FFFFFF"));
+
             tv.setClickable(true);
             tv.setTextSize(40);
 
@@ -124,12 +130,13 @@ public class sulisActivity extends Activity {
 
                     case R.id.nav_timetable:
                         Intent intent2 = new Intent(sulisActivity.this,timetableActivity.class);
+                        intent2.putExtra("ID", ID);
+                        intent2.putExtra("pw", pw);
                         startActivity(intent2);
                         break;
 
                     case R.id.nav_sulis:
-                        Intent intent3 = new Intent(sulisActivity.this,sulisActivity.class);
-                        startActivity(intent3);
+
                         break;
 
                 }
@@ -189,7 +196,26 @@ public class sulisActivity extends Activity {
             Document doc;
             try {
 
-                String url = "https://sulis.ul.ie/access/content/group/"+module.getModuleID();
+                Connection.Response loginForm = Jsoup.connect(URL)
+                        .method(Connection.Method.POST)
+                        .execute();
+
+                doc = Jsoup.connect(URL2)
+                        .data("cookieexists", "false")
+                        .data("eid", ID)
+                        .data("pw", pw)
+                        .data("submit", "Submit")
+                        .cookies(loginForm.cookies())
+                        .post();
+                HTML = doc.toString();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            doc = null;
+            return HTML;
+
+               /* String url = "https://sulis.ul.ie/access/content/group/"+module.getModuleID();
 
 
 
@@ -211,23 +237,7 @@ public class sulisActivity extends Activity {
                         .ignoreHttpErrors(true)
                         .post();
 
-
-
-                HTML = doc.toString();
-
-
-
-                Log.i(MSG, HTML);
-
-
-
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            doc = null;
-            return HTML;
+                */
         }
 
         @Override
@@ -236,19 +246,46 @@ public class sulisActivity extends Activity {
             Document doc = Jsoup.parse(HTML);
 
             if(doc.title().contains("Login Required")) {
-                Toast.makeText(context, "Error, Session Timed out", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Incorrect ID or password supplied", Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(context, loginActivity.class);
-                startActivity(i);
             }
 
             if(doc.title().contains("My Workspace")) {
-                
+                Toast.makeText(context, "Login successful", Toast.LENGTH_SHORT).show();
+
+
+                Elements elements = doc.select("div.fav-title");
+                doc = null;
+                Elements eLinks = elements.select("a[href]");
+
+                ArrayList<SulisModule> modules = new ArrayList<SulisModule>();
+                for(Element x : eLinks) {
+
+                    String[] temp = x.text().split(" ");
+                    if(temp.length == 3) {
+                        SulisModule module = new SulisModule("", temp[0], temp[2] + " " + temp[1]);
+                        module.setModuleLink(x.attr("abs:href"));
+                        modules.add(module);
+                    }
+                }
+
+
+
+
+
+
             }
+
+
+
+
+
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            Toast.makeText(context, "Logging into Sulis..", Toast.LENGTH_LONG).show();
         }
     }
 }

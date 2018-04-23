@@ -107,17 +107,18 @@ public class loginActivity extends Activity {
 
         Log.i(MSG, "timetable clicked");
         ID = iet.getText().toString();
-       // pw = pet.getText().toString();
+        pw = pet.getText().toString();
 
         if(!ID.isEmpty()) {
             Intent i = new Intent(this, timetableActivity.class);
+            i.putExtra("pw", pw);
             startActivity(i);
         }
         else    Toast.makeText(this, "Please input a Student ID to view your timetable", Toast.LENGTH_SHORT).show();
 
     }
 
-    class LoginTask extends AsyncTask<Void, String, String> {
+     class LoginTask extends AsyncTask<Void, String, String> {
 
         private Context context;
 

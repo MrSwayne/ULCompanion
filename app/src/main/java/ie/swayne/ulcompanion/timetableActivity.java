@@ -1,5 +1,6 @@
 package ie.swayne.ulcompanion;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.TabLayout;
@@ -54,6 +55,7 @@ public class timetableActivity extends AppCompatActivity {
     private final String ID = loginActivity.ID;
     private String HTML;
     private TimetableTask ttt;
+    private String pw;
     private ConstraintLayout layout;
     private LinearLayout modulesList;
     private TextView[] textViews;
@@ -68,6 +70,8 @@ public class timetableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
+
+        pw = getIntent().getStringExtra("pw");
 
         ttt = new TimetableTask(this);
         ttt.execute();
@@ -99,12 +103,12 @@ public class timetableActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_timetable:
-                        Intent intent2 = new Intent(timetableActivity.this,timetableActivity.class);
-                        startActivity(intent2);
                         break;
 
                     case R.id.nav_sulis:
                         Intent intent3 = new Intent(timetableActivity.this,sulisActivity.class);
+                        intent3.putExtra("ID", ID);
+                        intent3.putExtra("pw", pw);
                         startActivity(intent3);
                         break;
 
@@ -233,6 +237,10 @@ public class timetableActivity extends AppCompatActivity {
                             if(days[i].equalsIgnoreCase(tv.getText().toString())) {
                                 found = true;
                                 TextView tv2 = textViews[i * 2 + 1];
+                                tv2.setTextSize(25);
+                                tv2.setTextColor(Color.parseColor("#FFFFFF"));
+
+
                                 tv2.setVisibility(tv2.isShown()? View.GONE: View.VISIBLE);
                             }
                         }
@@ -245,7 +253,7 @@ public class timetableActivity extends AppCompatActivity {
 
                 for(int z = 0;z < timetable.length;z++) {
                     if(timetable[z][i] != null) {
-                        line += timetable[z][i].getStart() + "-" + timetable[z][i].getEnd() + " " + timetable[z][i].getCode() + "\n";
+                        line += timetable[z][i].getStart() + "-" + timetable[z][i].getEnd() + " " + timetable[z][i].getCode() + " " + timetable[z][i].getRoom() + "\n";
                         if(timetable[z][i].getDuration() > 1) for(int a = 1;a < timetable[z][i].getDuration();a++) z++;
                     }
 

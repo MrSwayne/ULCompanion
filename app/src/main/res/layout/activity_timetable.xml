@@ -25,8 +25,9 @@
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/navBar"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         tools:context="ie.swayne.ulcompanion.sulisActivity">
 
 
