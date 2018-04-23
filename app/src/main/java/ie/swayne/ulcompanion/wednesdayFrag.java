@@ -12,6 +12,7 @@ public class wednesdayFrag extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.wednesdaylayout, container, false);
+        View view = inflater.inflate(R.layout.wednesdaylayout, container, false);
+        return view;
     }
 }

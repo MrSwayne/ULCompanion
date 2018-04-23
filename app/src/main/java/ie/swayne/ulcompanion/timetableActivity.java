@@ -72,16 +72,18 @@ public class timetableActivity extends AppCompatActivity {
         ttt = new TimetableTask(this);
         ttt.execute();
 
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+        mSectionsPagerAdapter=new SectionsPagerAdapter(getSupportFragmentManager());
 
         mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        setupViewPager(mViewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
+        tabLayout.setupWithViewPager(mViewPager);
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+
 
         BottomNavigationView bottomNavigationView=(BottomNavigationView) findViewById(R.id.navBar);
 
@@ -111,6 +113,17 @@ public class timetableActivity extends AppCompatActivity {
         });
     }
 
+    private void setupViewPager(ViewPager viewPager)
+    {
+        SectionsPagerAdapter adapter= new SectionsPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new mondayFrag(),"Monday");
+        adapter.addFragment(new tuesdayFrag(),"Tuesday");
+        adapter.addFragment(new wednesdayFrag(),"Wednesday");
+        adapter.addFragment(new thursdayFrag(),"Thursday");
+        adapter.addFragment(new fridayFrag(),"Friday");
+        viewPager.setAdapter(adapter);
+    }
+
     public static class PlaceholderFragment extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
@@ -135,43 +148,6 @@ public class timetableActivity extends AppCompatActivity {
             return rootView;
         }
     }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment fragment =null;
-            switch (position){
-                case 0:
-                    fragment =new mondayFrag();
-                    break;
-                case 1:
-                    fragment=new tuesdayFrag();
-                    break;
-                case 2:
-                    fragment =new wednesdayFrag();
-                    break;
-                case 3:
-                    fragment =new thursdayFrag();
-                    break;
-                case 4:
-                    fragment =new fridayFrag();
-                    break;
-            }
-            return fragment;
-        }
-
-        @Override
-        public int getCount() {
-            // Show 3 total pages.
-            return 3;
-        }
-    }
-
 
         public void displayModules(ArrayList<TTModule> classes) {
             final String[] times = {"09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00"};
