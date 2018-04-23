@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/formLogo"
-        android:layout_width="384dp"
+        android:layout_width="0dp"
         android:layout_height="201dp"
         android:paddingVertical="5dp"
         android:scaleType="fitCenter"
@@ -97,5 +97,4 @@
 
         </LinearLayout>
     </ScrollView>
-
 </android.support.constraint.ConstraintLayout>

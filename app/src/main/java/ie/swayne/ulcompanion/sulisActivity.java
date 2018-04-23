@@ -5,7 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -106,6 +109,33 @@ public class sulisActivity extends Activity {
             moduleList.addView(tv);
             moduleList.addView(tv2);
         }
+
+        BottomNavigationView bottomNavigationView=(BottomNavigationView) findViewById(R.id.navBar);
+
+        bottomNavigationView.setOnNavigationItemReselectedListener(new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+
+                    case R.id.nav_home:
+                        Intent intent1 = new Intent(sulisActivity.this,loginActivity.class);
+                        startActivity(intent1);
+                        break;
+
+                    case R.id.nav_timetable:
+                        Intent intent2 = new Intent(sulisActivity.this,timetableActivity.class);
+                        startActivity(intent2);
+                        break;
+
+                    case R.id.nav_sulis:
+                        Intent intent3 = new Intent(sulisActivity.this,sulisActivity.class);
+                        startActivity(intent3);
+                        break;
+
+                }
+
+            }
+        });
     }
 
     public void getModuleData(SulisModule module, int index) {

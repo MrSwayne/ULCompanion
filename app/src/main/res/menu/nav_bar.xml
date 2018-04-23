@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home_white_24dp"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/nav_timetable"
+        android:icon="@drawable/ic_access_time_white_24dp"
+        android:title="@string/timetable" />
+    <item
+        android:id="@+id/nav_sulis"
+        android:icon="@drawable/ic_library_books_white_24dp"
+        android:title="@string/sulis" />
+</menu>
