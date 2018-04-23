@@ -20,7 +20,6 @@
         </activity>
         <activity android:name=".timetableActivity" />
         <activity android:name=".sulisActivity" />
-        <activity android:name=".mapActivity" />
         <activity
             android:name=".mapActivity"
             android:label="@string/title_activity_map"
